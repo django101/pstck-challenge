@@ -1,18 +1,17 @@
 ﻿module.exports = {
     getSuppliersListPage: (req, res) => {
-        let query = "SELECT * FROM `suppliers` ORDER BY AddedOn DESC"; // query database to get all the players
+        dbRequest = new mssql.Request();
+        // dbRequest.input("SupplierId", 0);
 
-        // execute query
-        db.query(query, (err, result) => {
-            if (err) {
-                res.redirect('/');
-            }
-
+        dbRequest.execute('GetSuppliers')
+        .then(result => {
             res.render('supplierslist.ejs', {
-                suppliers: result,
+                suppliers: result.recordset,
                 message: ''
             });
-        });
+        }).catch(err => {
+            return res.status(500).send(err);
+        })
     },
 
     addSupplierPage: (req, res) => {
@@ -24,16 +23,19 @@
 
     editSupplierPage: (req, res) => {
         let supplierId = req.params.id;
-        let query = "SELECT * FROM `suppliers` WHERE id = '" + supplierId + "' ";
-        db.query(query, (err, result) => {
-            if (err) {
-                return res.status(500).send(err);
-            }
+        
+        dbRequest = new mssql.Request();
+        dbRequest.input("SupplierId", supplierId);
+
+        dbRequest.execute('GetSuppliers')
+        .then(result => {
             res.render('supplierinfo.ejs', {
-                supplier: result[0]
-                , message: ''
+                supplier: result.recordset[0],
+                message: ''
             });
-        });
+        }).catch(err => {
+            return res.status(500).send(err);
+        })
     },
 
     addSupplier: (req, res) => {
@@ -46,24 +48,30 @@
         let supplier_phone = req.body.supplier_phone;
         let supplier_ref = Bakery.GenerateGUID();
 
-        let query = "INSERT INTO `suppliers` (Ref, Name, Email, Address, Phone, AddedBy) VALUES ('" + supplier_ref + "', '" + supplier_name + "', '" + supplier_email + "', '" + supplier_address + "', '" + supplier_phone + "', 'admin')";
+        dbRequest = new mssql.Request();
+        dbRequest.input("Name", supplier_name);
+        dbRequest.input("Address", supplier_address);
+        dbRequest.input("Email", supplier_email);
+        dbRequest.input("Phone", supplier_phone);
+        dbRequest.input("Ref", supplier_ref);
+        dbRequest.input("AddedBy", req.cookies["bakery_user_sid"]);
 
-        db.query(query, (err, result) => {
-            if (err) {
-                return res.status(500).send(err);
-            }
-
-            //toastr.success('Supplier Added Successfully');
-
+        dbRequest.execute('AddSupplier')
+        .then(result => {
             setTimeout(function () {
                 res.redirect('/supplierslist');
             }, 1000);
-
-            //res.render('supplierslist.ejs', {
-            //    suppliers: result,
-            //    message: "Supplier Added Successfully"
-            //});
-        });
+        }).catch(err => {
+            res.render('supplierinfo.ejs', {
+                message: err,
+                supplier:{
+                    Name:supplier_name,
+                    Address:supplier_address,
+                    Phone: supplier_phone,
+                    Email:supplier_email,
+                }
+            });
+        })
     },
 
     editSupplier: (req, res) => {
@@ -77,51 +85,64 @@
         let supplier_ref = req.body.supplier_ref;
         let supplier_Id = req.body.supplier_id;
 
-        let query = "UPDATE Suppliers SET Name = '" + supplier_name + "', Email = '" + supplier_email + "', Address = '" + supplier_address + "', Phone = '" + supplier_phone + "', ModifiedBy = 'admin', ModifiedOn = now() WHERE Id = '" + supplier_Id + "'";
 
-        db.query(query, (err, result) => {
-            if (err) {
-                return res.status(500).send(err);
-            }
+        dbRequest = new mssql.Request();
+        dbRequest.input("Id", supplier_Id);
+        dbRequest.input("Name", supplier_name);
+        dbRequest.input("Address", supplier_address);
+        dbRequest.input("Email", supplier_email);
+        dbRequest.input("Phone", supplier_phone);
+        dbRequest.input("Ref", supplier_ref);
+        dbRequest.input("ModifiedBy", req.cookies["bakery_user_sid"]);
 
-            //toastr.success('Supplier Added Successfully');
-
+        dbRequest.execute('UpdateSupplier')
+        .then(result => {
             setTimeout(function () {
                 res.redirect('/supplierslist');
             }, 1000);
-
-            //res.render('supplierslist.ejs', {
-            //    suppliers: result,
-            //    message: "Supplier Added Successfully"
-            //});
-        });
+        }).catch(err => {
+            res.render('supplierinfo.ejs', {
+                message: err,
+                supplier:{
+                    Name:supplier_name,
+                    Address:supplier_address,
+                    Phone: supplier_phone,
+                    Email:supplier_email,
+                }
+            });
+        })
     },
 
     deleteSupplier: (req, res) => {
         let supplierId = req.params.id;
-        let query = "UPDATE Suppliers SET Deleted = 1, DeletedOn = now(), DeletedBy = 'admin' WHERE Id = '" + supplierId + "'";
-        
-        db.query(query, (err, result) => {
-            if (err) {
-                return res.status(500).send(err);
-            }
+
+        dbRequest = new mssql.Request();
+        dbRequest.input("Id", supplierId);
+        dbRequest.input("DeletedBy", req.cookies["bakery_user_sid"]);
+
+        dbRequest.execute('DeleteSupplier')
+        .then(result => {
             setTimeout(function () {
                 res.redirect('/supplierslist');
             }, 1000);
-        });
+        }).catch(err => {
+            return res.status(500).send(err);
+        })
     },
 
     restoreSupplier: (req, res) => {
         let supplierId = req.params.id;
-        let query = "UPDATE Suppliers SET Deleted = 0, DeletedOn = null, DeletedBy = null WHERE Id = '" + supplierId + "'";
 
-        db.query(query, (err, result) => {
-            if (err) {
-                return res.status(500).send(err);
-            }
+        dbRequest = new mssql.Request();
+        dbRequest.input("Id", supplierId);
+
+        dbRequest.execute('RestoreSupplier')
+        .then(result => {
             setTimeout(function () {
                 res.redirect('/supplierslist');
             }, 1000);
-        });
+        }).catch(err => {
+            return res.status(500).send(err);
+        })
     }
 };

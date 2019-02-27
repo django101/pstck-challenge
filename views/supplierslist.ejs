@@ -24,6 +24,7 @@
                                 <th>Address</th>
                                 <th>Email</th>
                                 <th>Phone</th>
+                                <th></th>
                                 <th>Added On</th>
                                 <th style="text-align: center" class="no-print"></th>
                             </tr>
@@ -42,7 +43,8 @@
                                 <td><%= supplier.Address %></td>
                                 <td><%= supplier.Email %></td>
                                 <td><%= supplier.Phone %></td>
-                                <td><%= supplier.AddedOn %></td>
+                                <td align='center' class='text-warning'><%= supplier.NumberOfAccounts %> Account(s)</td>
+                                <td><%= supplier.DateAdded %></td>
                                 <td align='center' class='td-actions no-print'>
                                     <span style='width: 100%;'>
                                         <a href="/supplierinfo/<%= supplier.Id %>" title='Edit'><i class='icon-pencil table-icon edit'></i></a>
@@ -59,7 +61,7 @@
 
                             <% } else { %>
                             <tr>
-                                <td colspan="7" style="text-align: center">No Suppliers Found</td>
+                                <td colspan="8" style="text-align: center">No Suppliers Found</td>
                             </tr>
                             <% } %>
                         </tbody>

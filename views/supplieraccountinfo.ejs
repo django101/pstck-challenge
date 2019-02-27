@@ -56,6 +56,10 @@
                         </div>
                     </div>
 
+                    <% if (message != '') { %>
+                        <p class="text-center text-danger"><%= message %></p>
+                    <% } %>
+
                     <input type="hidden" value="<%= SupplierId %>" name="Supplier_Id" />
                     <input type="hidden" name="Supplier_Bank_Name" id="supplierBankName" />
                 </form>

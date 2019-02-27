@@ -1,41 +1,33 @@
 ﻿var Paystack = require('../paystack.js');
-var MainPageSupplierId = null;
+var MainPageSupplierId = 0;
 
 
 module.exports = {
     getSuppliersAccountsListPage: (req, res) => {
         var idNumber = req.params.id;
         MainPageSupplierId = idNumber;
-        let suppliers_query = "";
 
-        if (idNumber === 0 || idNumber === '0')
-            suppliers_query = "SELECT * FROM `suppliers` ORDER BY AddedOn ASC";
-        else
-            suppliers_query = "SELECT * FROM `suppliers` WHERE Id = '" + idNumber + "' ORDER BY AddedOn DESC";
+        dbRequest1 = new mssql.Request();
+        dbRequest1.input("SupplierId", MainPageSupplierId);
+        dbRequest1.execute('GetSuppliers')
+            .then(suppliersRes => {
+                var _suppliers = suppliersRes.recordset;
+          
+                dbRequest2 = new mssql.Request();
+                dbRequest2.execute('GetSuppliersAccounts')
+                    .then(supplierAccountsRes => {
+                        var _suppliersAccounts = supplierAccountsRes.recordset;
 
-        let suppliers_accounts_query = "SELECT * FROM `suppliers_accounts` ORDER BY AddedOn ASC";
-
-
-        db.query(suppliers_query, (err, result1) => {
-            if (err) {
+                        res.render('suppliersaccountslist.ejs', {
+                            suppliers: _suppliers,
+                            suppliers_accounts: _suppliersAccounts
+                        });
+                    }).catch(err => {
+                        return res.status(500).send(err);
+                    })
+            }).catch(err => {
                 return res.status(500).send(err);
-            }
-
-            let _suppliers = result1;
-
-            db.query(suppliers_accounts_query, (err, result2) => {
-                if (err) {
-                    return res.status(500).send(err);
-                }
-
-                let _suppliers_accounts = result2;
-
-                res.render('suppliersaccountslist.ejs', {
-                    suppliers: _suppliers,
-                    suppliers_accounts: _suppliers_accounts
-                });
-            });
-        });
+            })
     },
 
     addSupplierAccountPage: (req, res) => {
@@ -76,22 +68,27 @@ module.exports = {
             //console.log(recipient);
             var recipientCode = recipient.data.recipient_code;
 
-            let query = "INSERT INTO `suppliers_accounts` (Ref, Number, BankCode, Bank, AccountName, SupplierId) VALUES ('" + recipientCode + "', '" + supplier_account_number + "','" + supplier_account_bank + "','" + Supplier_Bank_Name + "','" + supplier_account_name + "','" + Supplier_Id + "')";
-
-            db.query(query, (err, result) => {
-                if (err) {
-                    return res.status(500).send(err);
-                }
-
-                //toastr.success('Supplier Added Successfully');
-
+            dbRequest = new mssql.Request();
+            dbRequest.input("SupplierId", Supplier_Id);
+            dbRequest.input("Reference", recipientCode);
+            dbRequest.input("AccountNumber", supplier_account_number);
+            dbRequest.input("AccountName", supplier_account_name);
+            dbRequest.input("BankCode", supplier_account_bank);
+            dbRequest.input("BankName", Supplier_Bank_Name);
+    
+            dbRequest.execute('AddSupplierAccount')
+            .then(result => {
                 var redirectId = 0;
                 if (MainPageSupplierId) redirectId = MainPageSupplierId; else redirectId = Supplier_Id;
 
                 setTimeout(function () {
                     res.redirect('/suppliersaccountslist/' + redirectId);
                 }, 1000);
-            });
+            }).catch(err => {
+                res.render('supplierinfo.ejs', {
+                    message: err
+                });
+            })
         });
     }
 };

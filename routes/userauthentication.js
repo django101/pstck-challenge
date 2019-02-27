@@ -19,34 +19,35 @@ module.exports = {
         let username = req.body.txtUsername;
         let password = req.body.txtPassword;
 
-        let query = "SELECT * FROM `Users` WHERE (UserId = '" + username + "')";
 
-        db.query(query, (err, result) => {
-            if (err) {
-                return res.status(500).send(err);
-            }
+        dbRequest = new mssql.Request();
+        dbRequest.input("UserId", username);
 
-            if (result.length > 0) {
+        dbRequest.execute('ValidateUser')
+        .then(result => {
+            if (result.rowsAffected > 0) {
                 const bcrypt = require('bcrypt');
 
-                bcrypt.compare(password, result[0].Password, function (err, rez) {
+                bcrypt.compare(password, result.recordset[0].Password, function (err, rez) {
                     if (rez === true) {
                         res.cookie('bakery_user_sid', username);
-                        res.cookie('bakery_user_sname', result[0].First + ' ' + result[0].Last);
+                        res.cookie('bakery_user_sname', result.recordset[0].First + ' ' + result.recordset[0].Last);
                         res.redirect('/');
                     }
                     else {
                         res.render('signin.ejs', {
-                            message: 'Incorrect UserId!!!'
+                            message: 'Incorrect Password!!!'
                         });
                     }
                 });
             }
             else {
                 res.render('signin.ejs', {
-                    message: 'Incorrect Password!!!'
+                    message: 'User NOT found!!!'
                 });
             }
-        });
+        }).catch(err => {
+            return res.status(500).send(err);
+        })
     }
 };

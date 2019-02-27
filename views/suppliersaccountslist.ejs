@@ -52,13 +52,13 @@
                                         <tbody>
                                             <% suppliersaccounts.forEach((supAccount, index) => {%>
                                             <tr>
-                                                <td><%= supAccount.Ref %></td>
-                                                <td><%= supAccount.Bank %></td>
-                                                <td><%= supAccount.Number %></td>
+                                                <td><span class='text-primary'><%= supAccount.Reference %></span></td>
+                                                <td><%= supAccount.BankName %></td>
+                                                <td><%= supAccount.AccountNumber %></td>
                                                 <td><%= supAccount.AccountName %></td>
                                                 <td align='center' class='td-actions no-print'>
-                                                    <a href="#" title="Modify this Supplier's account"><i class="icon-pencil text-success table-icon"></i></a>
-                                                    <a href="#" title="Pay Supplier via this account"><i class="icon-basket text-success table-icon"></i></a>
+                                                    <!-- <a href="#" title="Modify this Supplier's account"><i class="icon-pencil text-success table-icon"></i></a> -->
+                                                    <a href="#" title="Pay Supplier via this account"><i class="icon-basket text-success table-icon" style="font-size: 1.5rem"></i></a>
                                                 </td>
                                             </tr>
                                             <% }) %>

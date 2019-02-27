@@ -10,6 +10,7 @@ const express = require('express');
 const fileUpload = require('express-fileupload');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
+const mssql = require('mssql');
 const path = require('path');
 const toastr = require('toastr');
 const cors = require('cors');
@@ -33,63 +34,85 @@ const { getSignInPage, signout, signin } = require('./routes/userauthentication'
 const { paystackWebhookEvents } = require('./routes/paystackEvents');
 
 
-// create connection to database
-// the mysql.createConnection function takes in a configuration object which contains host, user, password and the database name.
-const db = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE,
-    port: process.env.DB_PORT
+//create connection to mssql database
+const sql = mssql.connect({
+    user: 'sa',
+    password: 'Password10$',
+    server: 'ANNETTE\\SQL2016', 
+    database: 'PaystackChallenge' 
+}, function (err) {
+        if (err) {console.log('error when connecting to db: ', err);
+        } else {
+            console.log('Connected to database');
+        }
 });
 
 
-// function handleDisconnect() {
-// // connect to database
-//     db.connect((err) => {
-//         if (err) {
-//             // throw err;
-//             console.log('error when connecting to db:', err);
-//             setTimeout(handleDisconnect, 2000);
-//         }
-//         console.log('Connected to database');
-//     });
+
+// // create connection to database
+// // the mysql.createConnection function takes in a configuration object which contains host, user, password and the database name.
+// const db = mysql.createConnection({
+//     host: process.env.DB_HOST,
+//     user: process.env.DB_USER,
+//     password: process.env.DB_PASSWORD,
+//     database: process.env.DB_DATABASE,
+//     port: process.env.DB_PORT
+// });
 
 
-//     db.on('error', function (err) {
-//         console.log('db error', err);
-//         if(err.code === 'PROTOCOL_CONNECTION_LOST') { // Connection to the MySQL server is usually
-//             handleDisconnect();                         // lost due to either server restart, or a
-//         } else {                                      // connnection idle timeout (the wait_timeout
-//             throw err;                                  // server variable configures this)
-//         }
-//     });
+// // function handleDisconnect() {
+// // // connect to database
+// //     db.connect((err) => {
+// //         if (err) {
+// //             // throw err;
+// //             console.log('error when connecting to db:', err);
+// //             setTimeout(handleDisconnect, 2000);
+// //         }
+// //         console.log('Connected to database');
+// //     });
+
+
+// //     db.on('error', function (err) {
+// //         console.log('db error', err);
+// //         if(err.code === 'PROTOCOL_CONNECTION_LOST') { // Connection to the MySQL server is usually
+// //             handleDisconnect();                         // lost due to either server restart, or a
+// //         } else {                                      // connnection idle timeout (the wait_timeout
+// //             throw err;                                  // server variable configures this)
+// //         }
+// //     });
+// // }
+
+// // handleDisconnect();
+
+
+// function connectToDb() {
+//     db.connect()
 // }
 
-// handleDisconnect();
 
-function connectToDb() {
-db.connect((err) => {
-    if (err) {
-        // throw err;
-        console.log('error when connecting to db:', err);
+// function connectToDb() {
+// db.connect((err) => {
+//     if (err) {
+//         // throw err;
+//         console.log('error when connecting to db:', err);
 
-        if(err.code === 'PROTOCOL_CONNECTION_LOST'){
-            connectToDb()
-        }
-        else{
-            throw err;
-        }
+//         if(err.code === 'PROTOCOL_CONNECTION_LOST'){
+//             connectToDb()
+//         }
+//         else{
+//             throw err;
+//         }
 
-        return;
-    }
-    console.log('Connected to database');
-});
-}
+//         return;
+//     }
+//     console.log('Connected to database');
+// });
+// }
 
-connectToDb();
+// connectToDb();
 
-global.db = db;
+// global.db = db;
+global.sql = sql;
 
 
 // configure middleware

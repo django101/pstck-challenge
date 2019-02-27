@@ -118,7 +118,8 @@ app.post('/eventhandler', paystackWebhookEvents);
 
 
 var j = schedule.scheduleJob('*/1 * * * *', function () {
-    console.log('Application Keep-Alive Ping: Database State - ' + db.state);
+    console.log('Application Keep-Alive Ping');
+    // console.log('Application Keep-Alive Ping: Database State - ' + db.state);
 });
 
 

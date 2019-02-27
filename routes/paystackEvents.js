@@ -9,8 +9,6 @@ module.exports = {
             if (!isRequestFromValidIp) res.status(403).json();
         }
 
-
-
         console.log(req.clientIp);
         console.log('\n');
         console.log('\n');

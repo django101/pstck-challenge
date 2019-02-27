@@ -10,8 +10,7 @@
 
             res.render('supplierslist.ejs', {
                 suppliers: result,
-                message: '',
-                displayName: req.cookies['bakery_user_sname'] 
+                message: ''
             });
         });
     },
@@ -19,8 +18,7 @@
     addSupplierPage: (req, res) => {
         res.render('supplierinfo.ejs', {
             message: '',
-            supplier: {},
-            displayName: req.cookies['bakery_user_sname'] 
+            supplier: {}
         });
     },
 
@@ -33,8 +31,7 @@
             }
             res.render('supplierinfo.ejs', {
                 supplier: result[0]
-                , message: '',
-                displayName: req.cookies['bakery_user_sname'] 
+                , message: ''
             });
         });
     },

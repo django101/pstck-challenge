@@ -5,8 +5,6 @@ module.exports = {
         //console.log(req.cookies);
         //console.log(req.cookies['bakery_user_sname']);
 
-
-
         res.render('signin.ejs', { message: '' });
     },
 

@@ -16,6 +16,7 @@ const cors = require('cors');
 const jQuery = require('jquery');
 const requestIp = require('request-ip');
 const cookieParser = require('cookie-parser');
+const schedule = require('node-schedule');
 
 const app = express();
 
@@ -71,27 +72,39 @@ app.use(requestIp.mw());
 
 
 
+var sessionChecker = (req, res, next) => {
+    if (req.cookies && req.cookies["bakery_user_sid"]) {
+        process.env.DISPLAYNAME = req.cookies['bakery_user_sname'];
+        next();
+    } else {
+        process.env.DISPLAYNAME = '';
+        res.redirect('/signout');
+    }    
+};
+
+
+
 
 // routes for the app
-app.get('/', getHomePage);
+app.get('/', sessionChecker, getHomePage);
 
-app.get('/supplierslist', getSuppliersListPage);
-app.get('/supplierinfo/', addSupplierPage);
-app.get('/supplierinfo/:id', editSupplierPage);
-app.post('/supplierinfo', addSupplier);
-app.post('/supplierinfo/:id', editSupplier);
-app.get('/supplierdelete/:id', deleteSupplier);
-app.get('/supplierrestore/:id', restoreSupplier);
+app.get('/supplierslist', sessionChecker, getSuppliersListPage);
+app.get('/supplierinfo/', sessionChecker, addSupplierPage);
+app.get('/supplierinfo/:id', sessionChecker, editSupplierPage);
+app.post('/supplierinfo', sessionChecker, addSupplier);
+app.post('/supplierinfo/:id', sessionChecker, editSupplier);
+app.get('/supplierdelete/:id', sessionChecker, deleteSupplier);
+app.get('/supplierrestore/:id', sessionChecker, restoreSupplier);
 
-app.get('/stocklist', getstocklistPage);
-app.get('/stockinfo', addstockPage);
-app.get('/stockinfo/:id', editstockPage);
-app.post('/stockinfo', addstock);
-app.post('/stockinfo/:id', editstock);
+app.get('/stocklist', sessionChecker, getstocklistPage);
+app.get('/stockinfo', sessionChecker, addstockPage);
+app.get('/stockinfo/:id', sessionChecker, editstockPage);
+app.post('/stockinfo', sessionChecker, addstock);
+app.post('/stockinfo/:id', sessionChecker, editstock);
 
-app.get('/suppliersaccountslist/:id', getSuppliersAccountsListPage);
-app.get('/suppliersaccountinfo/:id', addSupplierAccountPage);
-app.post('/suppliersaccountinfo/:id', addSupplierAccount);
+app.get('/suppliersaccountslist/:id', sessionChecker, getSuppliersAccountsListPage);
+app.get('/suppliersaccountinfo/:id', sessionChecker, addSupplierAccountPage);
+app.post('/suppliersaccountinfo/:id', sessionChecker, addSupplierAccount);
 
 app.get('/signin', getSignInPage);
 app.get('/signout', signout);
@@ -102,11 +115,18 @@ app.post('/eventhandler', paystackWebhookEvents);
 
 
 
+
+
+var j = schedule.scheduleJob('*/1 * * * *', function(){
+    console.log('Application Keep-Alive Ping');
+  });
+
+
+
 // route for handling 404 requests(unavailable routes)
 app.use(function (req, res, next) {
     res.status(404).send("Sorry can't find that!");
 });
-
 
 
 // set the app to listen on the port

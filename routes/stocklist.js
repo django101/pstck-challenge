@@ -10,8 +10,7 @@
 
             res.render('stocklist.ejs', {
                 stocks: result,
-                message: '',
-                displayName: req.cookies['bakery_user_sname'] 
+                message: ''
             });
         });
     },
@@ -19,8 +18,7 @@
     addstockPage: (req, res) => {
         res.render('stockinfo.ejs', {
             message: '',
-            stock: {},
-            displayName: req.cookies['bakery_user_sname'] 
+            stock: {}
         });
     },
 
@@ -33,8 +31,7 @@
             }
             res.render('stockinfo.ejs', {
                 stock: result[0]
-                , message: '',
-                displayName: req.cookies['bakery_user_sname'] 
+                , message: ''
             });
         });
     },

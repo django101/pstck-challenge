@@ -32,8 +32,7 @@ module.exports = {
 
                 res.render('suppliersaccountslist.ejs', {
                     suppliers: _suppliers,
-                    suppliers_accounts: _suppliers_accounts,
-                    displayName: req.cookies['bakery_user_sname'] 
+                    suppliers_accounts: _suppliers_accounts
                 });
             });
         });
@@ -48,8 +47,7 @@ module.exports = {
                 res.render('supplieraccountinfo.ejs', {
                     message: '',
                     banks: (JSON.parse(banks)).data,
-                    SupplierId: supplierId,
-                    displayName: req.cookies['bakery_user_sname'] 
+                    SupplierId: supplierId
                 });
             }
             //,
@@ -76,7 +74,6 @@ module.exports = {
 
         Paystack.SendRequest('transferrecipient', 'POST', data, function (recipient) {
             //console.log(recipient);
-
             var recipientCode = recipient.data.recipient_code;
 
             let query = "INSERT INTO `suppliers_accounts` (Ref, Number, BankCode, Bank, AccountName, SupplierId) VALUES ('" + recipientCode + "', '" + supplier_account_number + "','" + supplier_account_bank + "','" + Supplier_Bank_Name + "','" + supplier_account_name + "','" + Supplier_Id + "')";

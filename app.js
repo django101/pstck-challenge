@@ -79,7 +79,7 @@ var sessionChecker = (req, res, next) => {
     } else {
         process.env.DISPLAYNAME = '';
         res.redirect('/signout');
-    }    
+    }
 };
 
 
@@ -117,9 +117,10 @@ app.post('/eventhandler', paystackWebhookEvents);
 
 
 
-var j = schedule.scheduleJob('*/1 * * * *', function(){
+var j = schedule.scheduleJob('*/1 * * * *', function () {
+    db.connect((err) => { if (err) { console.log(err); } console.log('Connected to database'); });
     console.log('Application Keep-Alive Ping');
-  });
+});
 
 
 

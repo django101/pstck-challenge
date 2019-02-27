@@ -68,15 +68,26 @@ const db = mysql.createConnection({
 
 // handleDisconnect();
 
-
+function connectToDb() {
 db.connect((err) => {
     if (err) {
         // throw err;
         console.log('error when connecting to db:', err);
+
+        if(err.code === 'PROTOCOL_CONNECTION_LOST'){
+            connectToDb()
+        }
+        else{
+            throw err;
+        }
+
+        return;
     }
     console.log('Connected to database');
 });
+}
 
+connectToDb();
 
 global.db = db;
 

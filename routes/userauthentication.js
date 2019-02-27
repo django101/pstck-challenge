@@ -21,7 +21,7 @@ module.exports = {
         let username = req.body.txtUsername;
         let password = req.body.txtPassword;
 
-        let query = "SELECT * FROM `Users` WHERE UserId = '" + username + "'";
+        let query = "SELECT * FROM `Users` WHERE (UserId = '" + username + "')";
 
         db.query(query, (err, result) => {
             if (err) {

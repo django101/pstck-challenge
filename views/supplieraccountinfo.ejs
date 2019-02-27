@@ -1,0 +1,132 @@
+<% include partials/header.ejs %>
+
+<div class="row">
+    <div class="col-md-6 offset-md-3 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title" id="TopTitle"></h4>
+                <p class="card-description">
+                    Supplier Information
+                </p>
+                <form class="forms-sample" action="" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="ddlBank">Select Bank*</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend bg-transparent">
+                                <span class="input-group-text bg-transparent border-right-0">
+                                    <i class="icon-home text-primary"></i>
+                                </span>
+                            </div>
+                            <select class="form-control form-control-lg ctrl-rounded ddlBank" id="ddlBank" name="supplier_account_bank">
+                                <option class="options" value="">Select Bank</option>
+                                <% banks.forEach((bank, index) => { %>
+                                <option class="options" value="<%= bank.code %>"><%= bank.name %></option>
+                                <% }) %>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtAddress">Account Number *</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend bg-transparent">
+                                <span class="input-group-text bg-transparent border-right-0">
+                                    <i class="icon-briefcase text-primary"></i>
+                                </span>
+                            </div>
+                            <input type="text" class="form-control form-control-lg border-left-0 ctrl-rounded txtAddress" id="txtAcctNumber" name="supplier_account_number" placeholder="Account Number" required value="" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="txtAddress">Account Number *</label>
+                        <div class="input-group">
+                            <!--<div class="input-group-prepend bg-transparent">
+                                <span class="input-group-text bg-transparent border-right-0">
+                                    <i class="icon-briefcase text-primary"></i>
+                                </span>
+                            </div>-->
+                            <textarea type="text" style="background-color:#333" class="form-control form-control-lg border-left-0 ctrl-rounded txtAddress" id="txtAcctName" name="supplier_account_name" placeholder="Account Name" required readonly></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="mt-3" align="center">
+                            <button type="button" class="btn btn-success btn-rounded font-weight-medium auth-form-btn" id="btnVerify">VERIFY ACCOUNT</button>
+                            <button type="submit" class="btn btn-primary btn-rounded font-weight-medium auth-form-btn" id="btnSave">SAVE</button>
+                        </div>
+                    </div>
+
+                    <input type="hidden" value="<%= SupplierId %>" name="Supplier_Id" />
+                    <input type="hidden" name="Supplier_Bank_Name" id="supplierBankName" />
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript">
+
+        $(function () {
+            $("#btnSave").toggle();
+        });
+
+        $("#btnVerify").click(function (e) {
+            e.preventDefault();
+
+            $("#btnVerify").prop("disabled", "disabled");
+            $("#txtAcctName").val('');
+
+            var BankCode = $("#ddlBank").val();
+            var AccountNumber = $("#txtAcctNumber").val();
+
+            setTimeout(function () {
+                $.ajax({
+                    type: "GET",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    async: false,
+                    processData: false,
+                    crossDomain: true,
+                    beforeSend: function (xhr) { xhr.setRequestHeader('Authorization', 'Bearer sk_test_db07e05b6be63935f800ced3125c7bc29250aca7'); },
+                    url: "https://api.paystack.co/bank/resolve?account_number=" + AccountNumber + "&bank_code=" + BankCode + "",
+                    //data: JSON.stringify(_Data),
+                    success: function (response) {
+                        //console.log(response);
+                        var res = response.data;
+
+                        $("#txtAcctName").val(res.account_name);
+
+                        $("#btnVerify").toggle();
+                        $("#btnSave").toggle();
+                    },
+                    error: function (result) {
+                        //console.log("error");
+                        //console.log(result);
+
+                        $("#btnVerify").prop("disabled", false);
+                        $("#txtAcctName").val(result.responseJSON.message);
+                    }
+                });
+            }, 1000);
+        });
+
+        $("#ddlBank").change(function (e) {
+            e.preventDefault();
+            $("#supplierBankName").val($("#ddlBank option:selected").text());
+        });
+
+    </script>
+
+    <!--<div class="col-6 offset-3 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="mt-3" align="center">
+                    <button type="submit" class="btn btn-primary btn-rounded font-weight-medium auth-form-btn" id="btnSave">SAVE</button>
+                    <a href="/supplierslist" class="btn btn-danger btn-rounded font-weight-medium auth-form-btn">CANCEL</a>
+                </div>
+            </div>
+        </div>
+    </div>-->
+</div>
+
+<% include partials/footer.ejs %>

@@ -1,0 +1,73 @@
+<% include partials/header.ejs %>
+
+<div class="card">
+    <div class="card-body">
+        <div class="row mb-5">
+            <div class="col-6">
+                <h4 class="card-title">
+                    <h4>Stocks</h4>
+                </h4>
+            </div>
+            <div class="col-6" align="right">
+                <a href='/stockinfo' title='Add New Stock' class='addStore'><i class="icon-plus" style="font-size: 2rem"></i></a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="table-responsive">
+
+                    <table id="order-listing" class="table">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center">Ref</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Added On</th>
+                                <th style="text-align: center" class="no-print"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (stocks.length > 0) {%>
+
+                            <% stocks.forEach((stock, index) => { %>
+                            <tr>
+                                <td align='center'>
+                                    <span style='width: 100%;'>
+                                        <%= stock.Ref %>
+                                    </span>
+                                </td>
+                                <td><span class='text-primary'><%= stock.Name %></span></td>
+                                <td><%= stock.Description %></td>
+                                <td><%= stock.AddedOn %></td>
+                                <td align='center' class='td-actions no-print'>
+                                    <span style='width: 100%;'>
+                                        <a href="/stockinfo/<%= stock.Id %>" title='Edit'><i class='icon-pencil table-icon edit'></i></a>
+                                    </span>
+                                </td>
+                            </tr>
+                            <% }) %>
+
+                            <% } else { %>
+                            <tr>
+                                <td colspan="7" style="text-align: center">No stock Found</td>
+                            </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    Bakery.DataTable("#order-listing", 10, [0, 1, 2, 3, 4, 5, 6], []);
+</script>
+
+<% if (message != '') { %>
+<script type="text/javascript">
+    Bakery.Notify({ type: 'success', msg:<% - message %>});
+</script>
+<% } %>
+
+<% include partials/footer.ejs %>

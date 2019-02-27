@@ -1,0 +1,112 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Bakery - Paystack Technical Challenge II</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="/Resources/assets/main/vendors/iconfonts/ti-icons/css/themify-icons.css" />
+    <link rel="stylesheet" href="/Resources/assets/main/vendors/iconfonts/simple-line-icon/css/simple-line-icons.css" />
+    <link rel="stylesheet" href="/Resources/assets/main/vendors/css/vendor.bundle.base.css" />
+    <link rel="stylesheet" href="/Resources/assets/main/vendors/css/vendor.bundle.addons.css" />
+    <!-- endinject -->
+    <!-- plugin css for this page -->
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link href="/Resources/shared/css/bakery-fonts.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="/Resources/assets/main/css/vertical-layout-dark/style.css" />
+
+    <link href="/Resources/shared/css/bakery.css" rel="stylesheet" />
+    <!-- endinject -->
+    <link rel="shortcut icon" href="/Resources/assets/main/images/favicon.png" />
+
+    <!--================================CUSTOM CSS =========================================-->
+    <link href="/Resources/shared/vendor/noty/lib/noty.css" rel="stylesheet" />
+    <link href="/Resources/shared/vendor/noty/lib/themes/relax.css" rel="stylesheet" />
+    <link href="/Resources/shared/vendor/noty/lib/themes/mint.css" rel="stylesheet" />
+    <link href="/Resources/shared/vendor/noty/lib/themes/metroui.css" rel="stylesheet" />
+    <link href="/Resources/shared/vendor/noty/lib/themes/nest.css" rel="stylesheet" />
+    <link href="/Resources/shared/vendor/noty/lib/themes/semanticui.css" rel="stylesheet" />
+    <link href="/Resources/shared/vendor/noty/lib/themes/sunset.css" rel="stylesheet" />
+    <link href="/Resources/shared/vendor/noty/lib/themes/light.css" rel="stylesheet" />
+
+    <link href="/Resources/shared/css/jquery.sweet-modal.min.css" rel="stylesheet" />
+    <link href="/Resources/shared/vendor/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div class="container-scroller">
+        <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+            <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+                <a class="navbar-brand brand-logo mr-5" href="/">
+                    <img src="/resources/shared/img/bakery_logo.png" class="mr-2" alt="logo" style="height: auto" />
+                </a>
+                <a class="navbar-brand brand-logo-mini" href="/">
+                    <img src="/resources/shared/img/bakery_icon.png" alt="logo" />
+                </a>
+            </div>
+            <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+                <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+                    <span class="icon-grid"></span>
+                </button>
+
+                <ul class="navbar-nav navbar-nav-right">
+                    <li class="nav-item dropdown mr-5">
+                        <a class="nav-link count-indicator dropdown-toggle d-flex justify-content-center align-items-center" href="javascript:;" data-toggle="dropdown">
+                            <span><%= displayName %></span>
+                        </a>
+                    </li>
+                    <li class="nav-item nav-profile dropdown">
+                        <a class="nav-link" href="#" data-toggle="dropdown" id="profileDropdown">
+                            <img src="/Resources/assets/main/images/faces/face28.jpeg" alt="profile">
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+                            <a class="dropdown-item" href="/signout"><i class="icon-logout text-primary"></i>&nbsp; Logout</a>
+                        </div>
+                    </li>
+                </ul>
+
+                <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+                    <span class="icon-grid"></span>
+                </button>
+            </div>
+        </nav>
+        <!-- partial -->
+        <div class="container-fluid page-body-wrapper">
+            <nav class="sidebar sidebar-offcanvas" id="sidebar">
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">
+                            <i class="icon-home menu-icon mid-v-align"></i>
+                            <span class="menu-title mid-v-align">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/supplierslist">
+                            <i class="icon-briefcase menu-icon mid-v-align"></i>
+                            <span class="menu-title mid-v-align">My Suppliers</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/suppliersaccountslist/0">
+                            <i class="icon-wallet menu-icon mid-v-align"></i>
+                            <span class="menu-title mid-v-align">Suppliers' Accounts</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/stocklist">
+                            <i class="icon-handbag menu-icon mid-v-align"></i>
+                            <span class="menu-title mid-v-align">Stocks</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <!-- partial -->
+            <div class="main-panel">
+                <div class="content-wrapper">

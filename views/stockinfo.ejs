@@ -1,0 +1,62 @@
+<% include partials/header.ejs %>
+
+<div class="row">
+    <div class="col-md-6 offset-md-3 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title" id="TopTitle"></h4>
+                <p class="card-description">
+                    Stock Information
+                </p>
+                <form class="forms-sample" action="" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="txtName">Name *</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend bg-transparent">
+                                <span class="input-group-text bg-transparent border-right-0">
+                                    <i class="icon-briefcase text-primary"></i>
+                                </span>
+                            </div>
+                            <input type="text" class="form-control form-control-lg border-left-0 ctrl-rounded txtName" id="txtName" name="stock_name" placeholder="Name" required value="<%= stock.Name%>" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtAddress">Address *</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend bg-transparent">
+                                <span class="input-group-text bg-transparent border-right-0">
+                                    <i class="icon-briefcase text-primary"></i>
+                                </span>
+                            </div>
+                            <input type="text" class="form-control form-control-lg border-left-0 ctrl-rounded txtAddress" id="txtAddress" name="stock_description" placeholder="Description" required value="<%= stock.Description%>" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="mt-3" align="center">
+                            <button type="submit" class="btn btn-primary btn-rounded font-weight-medium auth-form-btn" id="btnSave">SAVE</button>
+                            <a href="/stockslist" class="btn btn-danger btn-rounded font-weight-medium auth-form-btn">CANCEL</a>
+                        </div>
+                    </div>
+
+                    <input id="txtId" type="hidden" class="txtId" name="stock_id" value="<%= stock.Id%>" />
+                    <input id="hdRef" type="hidden" class="hdRef" name="stock_ref" value="<%= stock.Ref%>" />
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <!--<div class="col-6 offset-3 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="mt-3" align="center">
+                    <button type="submit" class="btn btn-primary btn-rounded font-weight-medium auth-form-btn" id="btnSave">SAVE</button>
+                    <a href="/stockslist" class="btn btn-danger btn-rounded font-weight-medium auth-form-btn">CANCEL</a>
+                </div>
+            </div>
+        </div>
+    </div>-->
+</div>
+
+<% include partials/footer.ejs %>

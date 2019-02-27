@@ -1,0 +1,33 @@
+﻿
+body {
+    font-family: 'VarelaRound-Regular' !important;
+}
+
+.disabled {
+    pointer-events: none;
+    /*This makes it not clickable*/
+    opacity: 0.3;
+    /*This grays it out to look disabled*/
+}
+
+.dt-buttons {
+    margin-bottom: 10px !important;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.ctrl-rounded {
+    border-radius: 50px;
+}
+
+.mid-v-align {
+    vertical-align: middle !important;
+}
+
+.table-icon {
+    font-size: 1.2rem;
+    margin: 7px;
+    text-decoration: none;
+}

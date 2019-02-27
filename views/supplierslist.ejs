@@ -1,0 +1,73 @@
+<% include partials/header.ejs %>
+
+<div class="card">
+    <div class="card-body">
+        <div class="row mb-5">
+            <div class="col-6">
+                <h4 class="card-title">
+                    <h4>My Suppliers</h4>
+                </h4>
+            </div>
+            <div class="col-6" align="right">
+                <a href='/supplierinfo' title='Add New Supplier' class='addStore'><i class="icon-plus" style="font-size: 2rem"></i></a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="table-responsive">
+
+                    <table id="order-listing" class="table">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center"></th>
+                                <th>Name</th>
+                                <th>Address</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Added On</th>
+                                <th style="text-align: center" class="no-print"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (suppliers.length > 0) {%>
+
+                            <% suppliers.forEach((supplier, index) => { %>
+                            <tr>
+                                <td align='center'>
+                                    <span style='width: 100%;'>
+                                        <span class='badge badge-<% if (supplier.Deleted) {%>danger<%} else {%>success<%}%> ctrl-rounded'><% if (supplier.Deleted) {%>Deleted<%} else {%>Active<%}%></span>
+                                    </span>
+                                </td>
+                                <td><span class='text-primary'><%= supplier.Name %></span></td>
+                                <td><%= supplier.Address %></td>
+                                <td><%= supplier.Email %></td>
+                                <td><%= supplier.Phone %></td>
+                                <td><%= supplier.AddedOn %></td>
+                                <td align='center' class='td-actions no-print'>
+                                    <span style='width: 100%;'>
+                                        <a href="/supplierinfo/<%= supplier.Id %>" title='Edit'><i class='icon-pencil table-icon edit'></i></a>
+                                        <% if (supplier.Deleted) {%>
+                                        <a href="/supplierrestore/<%= supplier.Id %>" title='Restore'><i class='icon-check text-success restore table-icon'></i></a>
+                                        <%} else {%>
+                                        <a href="/supplierdelete/<%= supplier.Id %>" title='Delete'><i class='icon-trash text-danger delete table-icon'></i></a>
+                                        <%}%>
+                                        <a href="/suppliersaccountinfo/<%= supplier.Id %>" title='Add Account'><i class='icon-wallet text-warning table-icon edit'></i></a>
+                                    </span>
+                                </td>
+                            </tr>
+                            <% }) %>
+
+                            <% } else { %>
+                            <tr>
+                                <td colspan="7" style="text-align: center">No Suppliers Found</td>
+                            </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<% include partials/footer.ejs %>

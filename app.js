@@ -42,8 +42,18 @@ var dbConfig = {
 }
 
 //create connection to mssql database
+<<<<<<< HEAD
 const _sql = mssql.connect(dbConfig, function (err) {
         if (err) {console.log('Error when connecting to database: ', err);
+=======
+const sql = mssql.connect({
+    user: 'DB_9D7C83_surebet247_admin',
+    password: 'surebet247',
+    server: 'sql5035.site4now.net', 
+    database: 'DB_9D7C83_surebet247' 
+}, function (err) {
+        if (err) {console.log('error when connecting to db: ', err);
+>>>>>>> 7572b4bc6ec1f2bcbd58ee38a7ca25ce13f42043
         } else {
             console.log('Connected to database');
         }

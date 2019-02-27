@@ -36,10 +36,10 @@ const { paystackWebhookEvents } = require('./routes/paystackEvents');
 
 //create connection to mssql database
 const sql = mssql.connect({
-    user: 'sa',
-    password: 'Password10$',
-    server: 'ANNETTE\\SQL2016', 
-    database: 'PaystackChallenge' 
+    user: 'DB_9D7C83_surebet247_admin',
+    password: 'surebet247',
+    server: 'sql5035.site4now.net', 
+    database: 'DB_9D7C83_surebet247' 
 }, function (err) {
         if (err) {console.log('error when connecting to db: ', err);
         } else {

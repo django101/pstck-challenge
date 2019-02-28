@@ -6,8 +6,12 @@ module.exports = {
         var isRequestFromValidIp = acceptedIps.indexOf("req.clientIp") > -1;
 
         if (process.env.NODE_ENV === 'production') {
+            console.log("[WEBHOOK] - Incoming Request from an Unauthorized Ip Address : " + req.clientIp);
             if (!isRequestFromValidIp) res.status(403).json();
         }
+
+        console.log("[WEBHOOK] - Incoming Request");
+        console.log("[WEBHOOK] - " + req.body);
 
         // console.log(req.clientIp);
         // console.log('\n');
@@ -21,27 +25,25 @@ module.exports = {
         var _status = "";
         var _message = "";
 
-        if(_event === 'transfer.failed')
-        {
+        if (_event === 'transfer.failed') {
             _status = "FAILED";
             _message = req.body.data.reason;
         }
-        else if (_event === 'transfer.success')
-        {
+        else if (_event === 'transfer.success') {
             _status = "COMPLETED";
-        }    
+        }
 
         dbRequest = new mssql.Request();
         dbRequest.input("Reference", _reference);
         dbRequest.input("Message", _message);
         dbRequest.input("Status", _status);
-    
+
         dbRequest.execute('SetTransactionStatus')
-        .then(result => {
-            res.status(200).json();
-        }).catch(err => {
-            console.log(err);
-            res.status(500).json();
-        })
+            .then(result => {
+                res.status(200).json();
+            }).catch(err => {
+                console.log(err);
+                res.status(500).json();
+            })
     }
 };

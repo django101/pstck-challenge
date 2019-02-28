@@ -6,13 +6,17 @@ module.exports = {
         var isRequestFromValidIp = acceptedIps.indexOf("req.clientIp") > -1;
 
         if (process.env.NODE_ENV === 'production') {
-            console.log("[WEBHOOK] - Incoming Request from an Unauthorized Ip Address : " + req.clientIp);
-            if (!isRequestFromValidIp) res.status(403).json();
+            if (!isRequestFromValidIp) {
+                console.log("[WEBHOOK] - Incoming Request from an Unauthorized Ip Address : " + req.clientIp);
+                res.status(403).json();
+            }
         }
 
+        console.log("\n\n");
         console.log("[WEBHOOK] - Incoming Request");
-        console.log("[WEBHOOK] - " + req.body);
-
+        console.log("[WEBHOOK] - " + JSON.stringify(req.body));
+        console.log("\n\n");
+        
         // console.log(req.clientIp);
         // console.log('\n');
         // console.log('\n');

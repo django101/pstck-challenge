@@ -1,5 +1,6 @@
 var Paystack = require('../paystack.js');
 var SupplierAccounts = [];
+var BakeryAvailableBalance = 0.00
 
 function currencyFormat(num) {
     return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
@@ -37,6 +38,7 @@ module.exports = {
                 if (_balance !== undefined)
                     balance = parseFloat(_balance.balance) / parseFloat(100);
 
+                BakeryAvailableBalance = balance;
 
                 dbRequest1 = new mssql.Request();
                 dbRequest1.input("Id", supplierId);
@@ -98,6 +100,8 @@ module.exports = {
                         res.render('paysupplier.ejs', {
                             message: 'Transaction Initialized Successfully. The Status will be updated when the transaction is complete.',
                             mClass: 'success',
+                            Available_Balance_Formatted: currencyFormat(BakeryAvailableBalance),
+                            Available_Balance: BakeryAvailableBalance,
                             supplier: {
                                 Name: req.body.supplier_name,
                                 Address: req.body.supplier_address,

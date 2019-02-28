@@ -85,18 +85,19 @@ module.exports = {
             'reference': Reference
         };
 
-        Paystack.SendRequest('transfer', 'POST', data, function (transfer) {
-            if (transfer.status) {
-                dbRequest = new mssql.Request();
-                dbRequest.input("SupplierId", SupplierId);
-                dbRequest.input("Reference", Reference);
-                dbRequest.input("Amount", PaymentAmount);
-                dbRequest.input("VoucherNo", '');
-                dbRequest.input("Description", PaymentDescription);
-                dbRequest.input("Status", 'PENDING');
 
-                dbRequest.execute('AddTransaction')
-                    .then(result => {
+        dbRequest = new mssql.Request();
+        dbRequest.input("SupplierId", SupplierId);
+        dbRequest.input("Reference", Reference);
+        dbRequest.input("Amount", PaymentAmount);
+        dbRequest.input("VoucherNo", '');
+        dbRequest.input("Description", PaymentDescription);
+        dbRequest.input("Status", 'PENDING');
+
+        dbRequest.execute('AddTransaction')
+            .then(result => {
+                Paystack.SendRequest('transfer', 'POST', data, function (transfer) {
+                    if (transfer.status) {
                         res.render('paysupplier.ejs', {
                             message: 'Transaction Initialized Successfully. The Status will be updated when the transaction is complete.',
                             mClass: 'success',
@@ -115,22 +116,22 @@ module.exports = {
                             res.redirect('/transactionslist');
                         }, 3000)
                         );
-                    }).catch(err => {
-                        res.render('paysupplier.ejs', {
-                            message: err,
-                            mClass: 'danger',
-                            supplier: {
-                                Name: req.body.supplier_name,
-                                Address: req.body.supplier_address,
-                                Phone: req.body.supplier_phone,
-                                Email: req.body.supplier_email,
-                                Id: req.body.supplier_id,
-                                Ref: req.body.supplier_ref
-                            },
-                            supplierAccounts: SupplierAccounts
-                        });
-                    })
-            }
-        });
+                    }
+                });
+            }).catch(err => {
+                res.render('paysupplier.ejs', {
+                    message: err,
+                    mClass: 'danger',
+                    supplier: {
+                        Name: req.body.supplier_name,
+                        Address: req.body.supplier_address,
+                        Phone: req.body.supplier_phone,
+                        Email: req.body.supplier_email,
+                        Id: req.body.supplier_id,
+                        Ref: req.body.supplier_ref
+                    },
+                    supplierAccounts: SupplierAccounts
+                });
+            })
     }
 }

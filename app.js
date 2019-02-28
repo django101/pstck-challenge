@@ -28,6 +28,7 @@ const { getHomePage } = require('./routes/index');
 const { getSuppliersListPage, addSupplierPage, editSupplierPage, addSupplier, editSupplier, deleteSupplier, restoreSupplier } = require('./routes/supplierslist');
 const { getstocklistPage, addstockPage, editstockPage, addstock, editstock } = require('./routes/stocklist');
 const { getSuppliersAccountsListPage, addSupplierAccountPage, addSupplierAccount } = require('./routes/suppliersaccounts');
+const { getTransactionsListPage, getPaySupplierPage, makeSupplierPayment } = require('./routes/transactions');
 
 const { getSignInPage, signout, signin } = require('./routes/userauthentication');
 
@@ -42,21 +43,12 @@ var dbConfig = {
 }
 
 //create connection to mssql database
-<<<<<<< HEAD
 const _sql = mssql.connect(dbConfig, function (err) {
-        if (err) {console.log('Error when connecting to database: ', err);
-=======
-const sql = mssql.connect({
-    user: 'DB_9D7C83_surebet247_admin',
-    password: 'surebet247',
-    server: 'sql5035.site4now.net', 
-    database: 'DB_9D7C83_surebet247' 
-}, function (err) {
-        if (err) {console.log('error when connecting to db: ', err);
->>>>>>> 7572b4bc6ec1f2bcbd58ee38a7ca25ce13f42043
-        } else {
-            console.log('Connected to database');
-        }
+    if (err) {
+        console.log('Error when connecting to database: ', err);
+    } else {
+        console.log('Connected to database');
+    }
 });
 
 global.dbConn = _sql;
@@ -64,7 +56,7 @@ global.mssql = mssql;
 
 
 // configure middleware
-app.set('port', process.env.port || port); // set express to use this port
+app.set('port', process.env.PORT || port); // set express to use this port
 app.set('views', __dirname + '/views'); // set express to look in this folder to render our view
 app.set('view engine', 'ejs'); // configure template engine
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -111,6 +103,10 @@ app.post('/stockinfo/:id', sessionChecker, editstock);
 app.get('/suppliersaccountslist/:id', sessionChecker, getSuppliersAccountsListPage);
 app.get('/suppliersaccountinfo/:id', sessionChecker, addSupplierAccountPage);
 app.post('/suppliersaccountinfo/:id', sessionChecker, addSupplierAccount);
+
+app.get('/transactionslist', sessionChecker, getTransactionsListPage);
+app.get('/paysupplier/:id', sessionChecker, getPaySupplierPage);
+app.post('/paysupplier/:id', sessionChecker, makeSupplierPayment);
 
 app.get('/signin', getSignInPage);
 app.get('/signout', signout);

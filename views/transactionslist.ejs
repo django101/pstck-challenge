@@ -1,0 +1,90 @@
+<% include partials/header.ejs %>
+
+<div class="card">
+    <div class="card-body">
+        <div class="row mb-5">
+            <div class="col-6">
+                <h4 class="card-title">
+                    <h4>My Transactions</h4>
+                </h4>
+            </div>
+            <div class="col-6" align="right">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="table-responsive">
+
+                    <table id="order-listing" class="table">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center"></th>
+                                <th>Reference</th>
+                                <th>Supplier</th>
+                                <th style="text-align:right">Amount (&#x20A6;)</th>
+                                <th>Voucher No.</th>
+                                <th>Description</th>
+                                <th>Information</th>
+                                <th>Added On</th>
+                                <th>Last Updated On</th>
+                                <th style="text-align: center" class="no-print"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (transactions.length > 0) {%>
+                            <% transactions.forEach((trans, index) => { %>
+                            <tr>
+                                <td align='center'>
+                                        <span style='width: 100%;'>
+                                                <span class='badge badge-<% if (trans.Status === "FAILED") {%>danger<%} else if (trans.Status === "COMPLETED") {%>success<%} else {%>warning<%}%> ctrl-rounded'>
+                                                    <% if (trans.Status === "FAILED") {%>FAILED
+                                                    <%} else if (trans.Status === "COMPLETED") {%>COMPLETED
+                                                    <%} else {%>PENDING
+                                                    <%}%></span>
+                                            </span>
+                                </td>
+                                <td><span class='text-primary'>
+                                        <%= trans.Reference %></span></td>
+                                        <td>
+                                                <%= trans.Supplier %>
+                                            </td>
+                                <td align="right" class='text-warning'>
+                                    <%= trans.Amt %>
+                                </td>
+                                <td>
+                                    <%= trans.VoucherNo %>
+                                </td>
+                                <td>
+                                    <%= trans.Description %>
+                                </td>
+                                <td>
+                                    <%= trans.Information %>
+                                </td>
+                                <td>
+                                    <%= trans.TranDate %>
+                                </td>
+                                <td>
+                                    <%= trans.UpdatedOn %>
+                                </td>
+                                <td align='center' class='td-actions no-print'>
+                                    <span style='width: 100%;'>
+                                        <a href="/transactioninfo/<%= trans.Reference %>" title='View Transaction Information'><i
+                                                class='icon-note table-icon edit text-success' style="font-size: 1.5rem"></i></a>
+                                    </span>
+                                </td>
+                            </tr>
+                            <% }) %>
+                            <% } else { %>
+                            <tr>
+                                <td colspan="9" style="text-align: center">No Transactions Found</td>
+                            </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<% include partials/footer.ejs %>

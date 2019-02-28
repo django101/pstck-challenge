@@ -1,0 +1,245 @@
+<% include partials/header.ejs %>
+
+<style>
+    .read_only{
+        background-color:#333 !important;
+        color:white !important;
+    }
+</style>
+
+<form class="forms-sample" action="" method="post" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-md-6 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title" id="TopTitle"></h4>
+                    <p class="card-description">
+                        Pay Supplier
+                    </p>
+                    <div class="form-group">
+                        <label for="txtName">Name *</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend bg-transparent">
+                                <span class="input-group-text bg-transparent border-right-0">
+                                    <i class="icon-briefcase text-primary"></i>
+                                </span>
+                            </div>
+                            <input type="text" class="form-control form-control-lg border-left-0 ctrl-rounded read_only"
+                                id="txtAddress" name="supplier_name" placeholder="Address" readonly value="<%= supplier.Name%>" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtAddress">Address *</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend bg-transparent">
+                                <span class="input-group-text bg-transparent border-right-0">
+                                    <i class="icon-briefcase text-primary"></i>
+                                </span>
+                            </div>
+                            <input type="text" class="form-control form-control-lg border-left-0 ctrl-rounded read_only"
+                                id="txtAddress" name="supplier_address" placeholder="Address" readonly value="<%= supplier.Address%>" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtEmail">Email *</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend bg-transparent">
+                                <span class="input-group-text bg-transparent border-right-0">
+                                    <i class="icon-briefcase text-primary"></i>
+                                </span>
+                            </div>
+                            <input type="text" class="form-control form-control-lg border-left-0 ctrl-rounded read_only"
+                                id="txtAddress" name="supplier_email" placeholder="Address" readonly value="<%= supplier.Email%>" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtPhone">Phone Number *</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend bg-transparent">
+                                <span class="input-group-text bg-transparent border-right-0">
+                                    <i class="icon-briefcase text-primary"></i>
+                                </span>
+                            </div>
+                            <input type="text" class="form-control form-control-lg border-left-0 ctrl-rounded read_only"
+                                id="txtAddress" name="supplier_phone" placeholder="Address" readonly value="<%= supplier.Phone%>" />
+                        </div>
+                    </div>
+                    <input id="txtId" type="hidden" class="txtId" name="supplier_id" value="<%= supplier.Id%>" />
+                    <input id="hdRef" type="hidden" class="hdRef" name="supplier_ref" value="<%= supplier.Ref%>" />
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title" id="TopTitle"></h4>
+                    <p class="card-description">
+                        Payment Information
+                    </p>
+
+
+                    <div class="form-group">
+                        <label for="txtName">Select Account *</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend bg-transparent">
+                                <span class="input-group-text bg-transparent border-right-0">
+                                    <i class="icon-briefcase text-primary"></i>
+                                </span>
+                            </div>
+                            <select class="form-control form-control-lg ctrl-rounded ddlBank" id="ddlBank" name="payment_recepientcode">
+                                <option class="options" value="">Select Supplier's Bank</option>
+                                <% supplierAccounts.forEach((account, index) => { %>
+                                <option class="options" value="<%= account.Reference %>">
+                                    <%= account.AccountName %> (
+                                    <%= account.AccountNumber %> -
+                                    <%= account.BankName %>)</option>
+                                <% }) %>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtAddress">Payment Description *</label>
+                        <div class="input-group">
+                            <!-- <div class="input-group-prepend bg-transparent">
+                                <span class="input-group-text bg-transparent border-right-0">
+                                    <i class="icon-briefcase text-primary"></i>
+                                </span>
+                            </div> -->
+                            <textarea type="text" class="form-control form-control-lg border-left-0 ctrl-rounded txtPaymentDescription"
+                                id="txtPaymentDescription" name="payment_description" placeholder="Payment Description"
+                                required></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtEmail">Amount *</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend bg-transparent">
+                                <span class="input-group-text bg-transparent border-right-0">
+                                    <i class="icon-wallet text-primary"></i>
+                                </span>
+                            </div>
+                            <input type="text" class="form-control form-control-lg border-left-0 ctrl-rounded" id="txtAmount"
+                                name="payment_amount" placeholder="Amount" style="text-align:right" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="txtEmail">Current Balance</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend bg-transparent">
+                                <span class="input-group-text bg-transparent border-right-0">
+                                    <i class="icon-wallet text-primary"></i>
+                                </span>
+                            </div>
+                            <input type="text" class="form-control form-control-lg border-left-0 ctrl-rounded read_only"
+                                id="txtCurrentBalance" name="" readonly placeholder="Getting Balance..." style="text-align:right" value="<%= Available_Balance_Formatted %>" />
+
+                            <input type="hidden" id="hdCurrentBalance" name='payment_current_balance' value="<%= Available_Balance%>" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group">
+                        <div class="mt-3" align="center">
+                            <button type="submit" class="btn btn-primary btn-rounded font-weight-medium auth-form-btn"
+                                id="btnSave">SAVE</button>
+                            <a href="/transactionslist" class="btn btn-danger btn-rounded font-weight-medium auth-form-btn">CANCEL</a>
+                        </div>
+                    </div>
+                    <% if (mClass === 'danger') { %>
+                    <p class="text-center text-danger">
+                        <%= message %>
+                    </p>
+                    <% } else if (mClass === 'success') { %>
+                    <p class="text-center text-success">
+                        <%= message %>                      
+                    </p>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+
+    function currencyFormat(num) {
+        return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+    }
+
+    $(function () {
+        // setTimeout(function () {
+        //     $.ajax({
+        //         type: "GET",
+        //         contentType: "application/json; charset=utf-8",
+        //         dataType: "json",
+        //         async: true,
+        //         processData: false,
+        //         crossDomain: true,
+        //         beforeSend: function (xhr) { xhr.setRequestHeader('Authorization', 'Bearer sk_test_db07e05b6be63935f800ced3125c7bc29250aca7'); },
+        //         url: "https://api.paystack.co/balance",
+        //         //data: JSON.stringify(_Data),
+        //         success: function (PstckBalance) {
+        //             // console.log(response);
+        //             balance = 0.00;
+
+        //             var balData = PstckBalance.data;
+        //             var _balance = balData.find(obj => {
+        //                 return obj.currency === 'NGN'
+        //             });
+
+        //             if (_balance !== undefined)
+        //                 balance = parseFloat(_balance.balance) / parseFloat(100);
+
+        //             $("#txtCurrentBalance").val(currencyFormat(balance));
+        //             $("#hdCurrentBalance").val(balance);
+        //         },
+        //         error: function (result) {
+        //             //console.log("error");
+        //             //console.log(result);
+
+        //             $("#txtCurrentBalance").val('Unable to get balance at this time');
+        //             $("#hdCurrentBalance").val(0.00);
+        //         }
+        //     });
+        // }, 100);
+
+        $("#btnSave").click(function (e) {
+            e.preventDefault();
+
+            var ReceipientCode = $("#ddlBank").val();
+            var PaymentDescription = $("#txtPaymentDescription").val();
+            var Amount = $("#txtAmount").val();
+            var AvailableBalance = parseFloat($("#hdCurrentBalance").val());
+
+            var SupplierId = $("#txtId").val();
+
+            if (!ReceipientCode)
+                alert("Please select supplier's bank");
+            else if (!PaymentDescription)
+                alert("Please provide payment description");
+            else if (!Amount)
+                alert("Please provide amount")
+            else if (isNaN(Amount))
+                alert("Amount is INVALID!!!")
+            else if (AvailableBalance < parseFloat(Amount)) {
+                if (confirm("Your available balance may not be able to cover this transaction. The transaction may eventually fail.\n\nDo you want to proceed?")) {
+                    $("form").submit();
+                }
+            }
+            else {
+                $("form").submit();
+            }
+
+        })
+    });
+</script>
+
+<% include partials/footer.ejs %>

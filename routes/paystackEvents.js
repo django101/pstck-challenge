@@ -9,15 +9,39 @@ module.exports = {
             if (!isRequestFromValidIp) res.status(403).json();
         }
 
-        console.log(req.clientIp);
-        console.log('\n');
-        console.log('\n');
-        console.log(req.headers);
-        console.log('\n'); console.log('\n');
-        console.log(req.body);
+        // console.log(req.clientIp);
+        // console.log('\n');
+        // console.log('\n');
+        // console.log(req.headers);
+        // console.log('\n'); console.log('\n');
+        // console.log(req.body);
 
-        res.status(200).json();
+        var _event = req.body.event;
+        var _reference = req.body.data.reference;
+        var _status = "";
+        var _message = "";
 
-        //res.status(201).json(["Tony", "Lisa", "Michael", "Ginger", "Food"]);
+        if(_event === 'transfer.failed')
+        {
+            _status = "FAILED";
+            _message = req.body.data.reason;
+        }
+        else if (_event === 'transfer.success')
+        {
+            _status = "COMPLETED";
+        }    
+
+        dbRequest = new mssql.Request();
+        dbRequest.input("Reference", _reference);
+        dbRequest.input("Message", _message);
+        dbRequest.input("Status", _status);
+    
+        dbRequest.execute('SetTransactionStatus')
+        .then(result => {
+            res.status(200).json();
+        }).catch(err => {
+            console.log(err);
+            res.status(500).json();
+        })
     }
 };

@@ -29,7 +29,10 @@
 
                             <tr>
                                 <td align='center'>
-                                    <a href='/suppliersaccountinfo/<%= supplier.Id %>' title='Add New Account For Supplier' class='addStore'><i class="icon-plus" style="font-size: 2rem"></i></a>
+                                    <a href='/suppliersaccountinfo/<%= supplier.Id %>' title='Add New Account For Supplier' class='addStore'><i class="icon-plus" style="font-size: 1.5rem"></i></a>
+
+                                    <a href="/paysupplier/<%= supplier.Id %>" title="Pay Supplier"><i class="icon-basket text-success table-icon"
+                                        style="font-size: 1.5rem"></i></a>
                                 </td>
                                 <td><span class='text-primary'><%= supplier.Name %></span></td>
                                 <td>
@@ -58,7 +61,7 @@
                                                 <td><%= supAccount.AccountName %></td>
                                                 <td align='center' class='td-actions no-print'>
                                                     <!-- <a href="#" title="Modify this Supplier's account"><i class="icon-pencil text-success table-icon"></i></a> -->
-                                                    <a href="#" title="Pay Supplier via this account"><i class="icon-basket text-success table-icon" style="font-size: 1.5rem"></i></a>
+                                                    
                                                 </td>
                                             </tr>
                                             <% }) %>

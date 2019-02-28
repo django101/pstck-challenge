@@ -47,9 +47,11 @@ module.exports = {
 
                 dbRequest.execute('SetTransactionStatus')
                     .then(result => {
+                        console.log("[WEBHOOK]: Output Response - " + 200)
                         res.status(200).json();
                     }).catch(err => {
                         console.log(err);
+                        console.log("[WEBHOOK]: Output Response - " + 500)
                         res.status(500).json();
                     })
             }

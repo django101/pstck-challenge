@@ -133,7 +133,8 @@
                                 </span>
                             </div>
                             <input type="text" class="form-control form-control-lg border-left-0 ctrl-rounded read_only"
-                                id="txtCurrentBalance" name="" readonly placeholder="Getting Balance..." style="text-align:right" value="<%= Available_Balance_Formatted %>" />
+                                id="txtCurrentBalance" name="" readonly placeholder="Getting Balance..." style="text-align:right"
+                                value="<%= Available_Balance_Formatted %>" />
 
                             <input type="hidden" id="hdCurrentBalance" name='payment_current_balance' value="<%= Available_Balance%>" />
                         </div>
@@ -145,6 +146,9 @@
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
+                    <p class="text-center text-warning">PLEASE NOTE: You will be charged a flat fee of &#x20A6;50.00
+                        for this transaction</p>
+
                     <div class="form-group">
                         <div class="mt-3" align="center">
                             <button type="submit" class="btn btn-primary btn-rounded font-weight-medium auth-form-btn"
@@ -158,7 +162,7 @@
                     </p>
                     <% } else if (mClass === 'success') { %>
                     <p class="text-center text-success">
-                        <%= message %>                      
+                        <%= message %>
                     </p>
                     <% } %>
                 </div>
@@ -229,7 +233,7 @@
                 alert("Please provide amount")
             else if (isNaN(Amount))
                 alert("Amount is INVALID!!!")
-            else if (AvailableBalance < parseFloat(Amount)) {
+            else if (AvailableBalance + 50 < parseFloat(Amount)) {
                 if (confirm("Your available balance may not be able to cover this transaction. The transaction may eventually fail.\n\nDo you want to proceed?")) {
                     $("form").submit();
                 }
